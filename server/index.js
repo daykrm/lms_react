@@ -74,10 +74,15 @@ app.post('/addart',(req,res)=>{
   const {body} = req.body;
   const obj = JSON.parse(body);
   const ADD_ART = `INSERT INTO article VALUES('','${obj.artName}','${obj.artDetail}','${obj.status}')`
+  pool.getConnection(function(error, conn) {
   conn.query(ADD_ART,(err,data)=>{
     if (err) return res.send(err)
-    else res.send('Add Article Successful !!')  
+    else res.send('Add Article Successful !!')
+    conn.release();
+    // Handle error after the release.
+    if (error) throw error;
   })
+});
 })
 
 app.get('/', function(req, res) {
