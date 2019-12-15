@@ -16,10 +16,10 @@ app.use(bodyParser.json());
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 const conn = mysql.createConnection({
-  host: 'us-cdbr-iron-east-05.cleardb.net',
-  user:'b09042b989ce16',
-  password:'a52e74ec',
-  database:'heroku_77e0386e8b781cf'
+  host: process.env.DB_HOST,
+  user:process.env.DB_USER,
+  password:process.env.DB_PASS,
+  database:process.env.DB_NAME
 });
 
 conn.connect(err => {
