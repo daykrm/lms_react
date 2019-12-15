@@ -3,7 +3,7 @@ const mysql = require("mysql");
 const cors = require("cors");
 require("dotenv").config();
 const bodyParser = require("body-parser");
-//const bcrypt = require("bcrypt");
+//const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const SALT_WORK_FACTOR = 10;
@@ -55,7 +55,7 @@ app.post('/addart',(req,res)=>{
     else res.send('Add Article Successful !!')
   })
 })
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server listening on port : ${PORT}`);
 });
