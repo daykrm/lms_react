@@ -8,8 +8,27 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const SALT_WORK_FACTOR = 10;
 var path = require('path');
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
+const isDev = process.env.NODE_ENV !== 'production';
+const PORT = process.env.PORT || 5000;
 
-const app = express();
+// Multi-process to utilize all CPU cores.
+if (!isDev && cluster.isMaster) {
+  console.error(`Node cluster master ${process.pid} is running`);
+
+  // Fork workers.
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on('exit', (worker, code, signal) => {
+    console.error(`Node cluster worker ${worker.process.pid} exited: code ${code}, signal ${signal}`);
+  });
+
+}
+else{
+  const app = express();
 app.use(cookieParser());
 app.use(cors());
 app.use(bodyParser.json());
@@ -55,7 +74,10 @@ app.post('/addart',(req,res)=>{
     else res.send('Add Article Successful !!')
   })
 })
-const PORT = process.env.PORT || 8080;
+
 app.listen(PORT, () => {
   console.log(`Server listening on port : ${PORT}`);
 });
+
+}
+
