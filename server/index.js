@@ -52,33 +52,33 @@ var pool  = mysql.createPool({
 /*conn.connect(err => {
     if (err) return err
 });*/
-pool.getConnection(function(err, conn) {
-  if (err) throw err; // not connected!
+
   app.get('/article/:id?',(req,res)=>{
     const paramId = req.params.id;
     //const queryId = req.query.id;
     var id = (!paramId) ? '1': 'artID ='+paramId;
     const SELECT_ARTICLE = `SELECT * FROM article WHERE ${id}`
     console.log(SELECT_ARTICLE);
-    conn.query(SELECT_ARTICLE,(err,data)=>{
+    pool.getConnection(function(error, conn) {
+      conn.query(SELECT_ARTICLE,(err,data)=>{
         if (err) return res.send(err)
-        else res.send(data)
+        else res.send(data)      
         conn.release();
-        if (error) throw error;
+    // Handle error after the release.
+    if (error) throw error;
     })
-})
+    });
+  });
+
 app.post('/addart',(req,res)=>{
   const {body} = req.body;
   const obj = JSON.parse(body);
   const ADD_ART = `INSERT INTO article VALUES('','${obj.artName}','${obj.artDetail}','${obj.status}')`
   conn.query(ADD_ART,(err,data)=>{
     if (err) return res.send(err)
-    else res.send('Add Article Successful !!')
-    conn.release();
-    if (error) throw error;
+    else res.send('Add Article Successful !!')  
   })
 })
-});
 
 app.get('/', function(req, res) {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
