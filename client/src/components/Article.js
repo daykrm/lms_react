@@ -16,7 +16,7 @@ export default class Article extends Component {
   }
   componentWillUnmount() {}
   getData = () => {
-    Axios.get("api/article").then(res => {
+    Axios.get("/api/article").then(res => {
       this.setState({ data: res.data });
     });
   };

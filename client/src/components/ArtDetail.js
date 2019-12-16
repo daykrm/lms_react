@@ -11,7 +11,7 @@ export default class ArtDetail extends Component {
     };
   }
   componentDidMount() {
-    Axios.get(`api/article/${this.state.id}`).then(res => {
+    Axios.get(`/api/article/${this.state.id}`).then(res => {
       var test = res.data;
       var test2 = test[0];
       this.setState({ detail: test2.artDetail, name: test2.artName });

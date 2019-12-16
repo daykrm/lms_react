@@ -53,7 +53,7 @@ var pool  = mysql.createPool({
     if (err) return err
 });*/
 
-  app.get('api/article/:id?',(req,res)=>{
+  app.get('/api/article/:id?',(req,res)=>{
     const paramId = req.params.id;
     //const queryId = req.query.id;
     var id = (!paramId) ? '1': 'artID ='+paramId;
@@ -70,7 +70,7 @@ var pool  = mysql.createPool({
     });
   });
 
-app.post('api/addart',(req,res)=>{
+app.post('/api/addart',(req,res)=>{
   const {body} = req.body;
   const obj = JSON.parse(body);
   const ADD_ART = `INSERT INTO article VALUES('','${obj.artName}','${obj.artDetail}','${obj.status}')`
@@ -85,11 +85,11 @@ app.post('api/addart',(req,res)=>{
 });
 })
 
-app.get('/*', function(req, res) {
+app.get('/', function(req, res) {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 
-app.get('api/test' ,function(req,res){
+app.get('/api/test' ,function(req,res){
   console.log(conn)
   res.end()
 })
