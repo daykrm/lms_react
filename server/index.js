@@ -3,7 +3,7 @@ const mysql = require("mysql");
 const cors = require("cors");
 require("dotenv").config();
 const bodyParser = require("body-parser");
-//const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const SALT_WORK_FACTOR = 10;
@@ -78,10 +78,33 @@ app.get('/*', function(req, res) {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 
-app.get('/api/test' ,function(req,res){
-  console.log(conn)
-  res.end()
-})
+app.post("/api/login", (req, res) => {
+  var { username, password } = req.body;
+  const SELECT = `SELECT * FROM users WHERE username ='${username}'`;
+  conn.query(SELECT, (err, user) => {
+    if (err) return res.send(err);
+    else if (user.length === 0) return res.send("ไม่มีชื่อผู้ใช้นี้ในระบบ");
+    else {
+      const db = user[0].firstname;
+      const db2 = user[0].lastname;
+      const db_data = user[0];
+      var hash = user[0].password;
+      console.log(db_data);
+      bcrypt.compare(password, hash, function(err, isMatch) {
+        if (err) return res.send(err);
+        if (!isMatch) return res.send("รหัสผ่านไม่ถูกต้อง");
+        else {
+          const payload = { username: username, name: db, lname: db2 };
+          const token = jwt.sign(payload, process.env.SECRET, {
+            expiresIn: "1h"
+          });
+          res.cookie("token", token, { httpOnly: true }).sendStatus(200);
+          //res.send(token)
+        }
+      });
+    }
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening on port : ${PORT}`);
