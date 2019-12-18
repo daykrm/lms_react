@@ -6,7 +6,7 @@ import {Col,Row,Container} from "react-bootstrap";
 import Menu from "./Menu";
 import ArtDetail from "./ArtDetail";
 import AddArt from "./AddArt";
-//import Login from "./Login";
+import Login from "./Login";
 import Aims from "./Aims";
 import Coach from "./Coach";
 
@@ -26,6 +26,7 @@ export default class App extends Component {
           <Route path="/aims" component={Aims}/>
           <Route path="/coach" component={Coach}/>
           <Route path="/addart" component={AddArt}/>
+          <Route path="/login" component={Login}/>
           <Route path="/article/:ID" component={ArtDetail}/>
         </Switch>
             </Col>

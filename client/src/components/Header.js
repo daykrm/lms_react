@@ -21,7 +21,7 @@ export default class Header extends Component {
           <Navbar.Collapse>
           <Nav className="mr-auto" >
           </Nav>
-          <Link to="/login"><Button variant="outline-light">Login</Button></Link>
+          <Link to="/login"><Button variant="outline-light">Logina</Button></Link>
           </Navbar.Collapse>
         </Navbar>
       </div>
