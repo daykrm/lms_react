@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import {Col,Row,Form} from 'react-bootstrap';
 import Axios from "axios";
 
@@ -36,22 +36,21 @@ export default class AddArt extends Component {
                 </Row>
                 <h4 className ="MarginTop">Article's Detail</h4>
                 <CKEditor
-                    editor={ ClassicEditor }
-                    data="<p>Hello from CKEditor 5!</p>"
                     onInit={ editor => {
-                        // You can store the "editor" and use when it is needed.
                         console.log( 'Editor is ready to use!', editor );
+
+                        // Insert the toolbar before the editable area.
+                        editor.ui.getEditableElement().parentElement.insertBefore(
+                            editor.ui.view.toolbar.element,
+                            editor.ui.getEditableElement()
+                        );
                     } }
                     onChange={ ( event, editor ) => {
                         const data = editor.getData();
                         this.setState({artDetail: data})
                     } }
-                    onBlur={ ( event, editor ) => {
-                        console.log( 'Blur.', editor );
-                    } }
-                    onFocus={ ( event, editor ) => {
-                        console.log( 'Focus.', editor );
-                    } }
+                    editor={ DecoupledEditor }
+                    data="<p>Type your content here!</p>"
                 />
                 <center className ="MarginTop">
                 <button type="button" onClick={this.handleSubmit}>Submit</button></center>
