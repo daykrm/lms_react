@@ -21,7 +21,7 @@ export default class ArtDetail extends Component {
     return (
       <div>
         <center>
-          <h4 className="MarginTop">เรื่อง {this.state.name}</h4>
+          <h4 className="MarginTop">{this.state.name}</h4>
         </center>
         <div
           className="MarginTop"
