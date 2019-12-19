@@ -3,10 +3,10 @@ const mysql = require("mysql");
 const cors = require("cors");
 require("dotenv").config();
 const bodyParser = require("body-parser");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
-const SALT_WORK_FACTOR = 10;
+const salt = bcrypt.genSaltSync(10);
 var path = require('path');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
@@ -59,7 +59,7 @@ var pool  = mysql.createPool({
     });
   });
 
-app.post('/api/addart',(req,res)=>{
+app.post('/addart',(req,res)=>{
   const {body} = req.body;
   const obj = JSON.parse(body);
   const ADD_ART = `INSERT INTO article VALUES('','${obj.artName}','${obj.artDetail}','${obj.status}')`
@@ -78,9 +78,10 @@ app.get('/*', function(req, res) {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 
-app.post("/api/login", (req, res) => {
+app.post("/login", (req, res) => {
   var { username, password } = req.body;
   const SELECT = `SELECT * FROM users WHERE username ='${username}'`;
+  pool.getConnection(function(error, conn) {
   conn.query(SELECT, (err, user) => {
     if (err) return res.send(err);
     else if (user.length === 0) return res.send("ไม่มีชื่อผู้ใช้นี้ในระบบ");
@@ -103,7 +104,11 @@ app.post("/api/login", (req, res) => {
         }
       });
     }
+    conn.release();
+    // Handle error after the release.
+    if (error) throw error;
   });
+});
 });
 
 app.listen(PORT, () => {

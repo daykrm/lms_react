@@ -17,14 +17,16 @@ export default class Login extends Component {
   };
   handleSubmit = e => {
     e.preventDefault();
-    Axios.post("/api/login", {
+    Axios.post("/login", {
       username: this.state.username,
       password: this.state.password
     })
       .then(res => {
         if (res.status === 200) {
+          alert('login naja');
           this.props.history.push("/");
         } else {
+          alert('error naja');
           const error = new Error(res.error);
           throw error;
         }
@@ -45,6 +47,7 @@ export default class Login extends Component {
     }
     `}
         </style>
+        <form>
         <h4>Username</h4>
         <Form.Control
           type="text"
@@ -60,10 +63,11 @@ export default class Login extends Component {
           onChange={this.handleChange}
         />
         <center>
-          <Button className="MarginTop" variant="flat" size="lg">
+          <Button type="submit" className="MarginTop" variant="flat" size="lg">
             Login
           </Button>
         </center>
+        </form>
       </div>
     );
   }
