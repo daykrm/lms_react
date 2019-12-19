@@ -1,17 +1,40 @@
 import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
+import Axios from "axios";
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      redirect: false
     };
   }
   handleChange = e => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
+  };
+  handleSubmit = e => {
+    e.preventDefault();
+    Axios.post("/login", {
+      username: this.state.username,
+      password: this.state.password
+    })
+      .then(res => {
+        if (res.status === 200) {
+          alert('login naja');
+          this.props.history.push("/");
+        } else {
+          alert('error naja');
+          const error = new Error(res.error);
+          throw error;
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert("Error logging in please try again");
+      });
   };
   render() {
     return (
@@ -24,6 +47,7 @@ export default class Login extends Component {
     }
     `}
         </style>
+        <form>
         <h4>Username</h4>
         <Form.Control
           type="text"
@@ -39,10 +63,11 @@ export default class Login extends Component {
           onChange={this.handleChange}
         />
         <center>
-        <Button className="MarginTop" variant="flat" size="lg">
-          Login
-        </Button>
-        </center> 
+          <Button type="submit" className="MarginTop" variant="flat" size="lg">
+            Login
+          </Button>
+        </center>
+        </form>
       </div>
     );
   }

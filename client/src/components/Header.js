@@ -18,11 +18,6 @@ export default class Header extends Component {
             />
             {"Nakorn Khon Kaen School"}
           </Navbar.Brand>
-          <Navbar.Collapse>
-          <Nav className="mr-auto" >
-          </Nav>
-          <Link to="/login"><Button variant="outline-light">Login</Button></Link>
-          </Navbar.Collapse>
         </Navbar>
       </div>
     );
