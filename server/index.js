@@ -12,6 +12,7 @@ const cluster = require("cluster");
 const numCPUs = require("os").cpus().length;
 const isDev = process.env.NODE_ENV !== "production";
 const PORT = process.env.PORT || 5000;
+const withAuth = require("./middleware.js");
 
 // Multi-process to utilize all CPU cores.
 if (!isDev && cluster.isMaster) {
@@ -100,8 +101,9 @@ if (!isDev && cluster.isMaster) {
   });
 
   app.post("/login", (req, res) => {
-    var { username, password } = req.body;
-    const SELECT = `SELECT * FROM users WHERE username ='${username}'`;
+    var { body } = req.body;
+    var obj = JSON.parse(body);
+    const SELECT = `SELECT * FROM users WHERE username ='${obj.username}'`;
     pool.getConnection(function(error, conn) {
       conn.query(SELECT, (err, user) => {
         if (err) return res.send(err);
@@ -112,11 +114,11 @@ if (!isDev && cluster.isMaster) {
           const db_data = user[0];
           var hash = user[0].password;
           console.log(db_data);
-          bcrypt.compare(password, hash, function(err, isMatch) {
+          bcrypt.compare(obj.password, hash, function(err, isMatch) {
             if (err) return res.send(err);
             if (!isMatch) return res.send("รหัสผ่านไม่ถูกต้อง");
             else {
-              const payload = { username: username, name: db, lname: db2 };
+              const payload = { username: obj.username, name: db, lname: db2 };
               const token = jwt.sign(payload, process.env.SECRET, {
                 expiresIn: "1h"
               });
@@ -130,6 +132,21 @@ if (!isDev && cluster.isMaster) {
         if (error) throw error;
       });
     });
+  });
+
+  app.get("/secret", withAuth, function(req, res) {
+    const token =
+      req.body.token ||
+      req.query.token ||
+      req.headers["x-access-token"] ||
+      req.cookies.token;
+    jwt.verify(token, process.env.SECRET, function(err, decoded) {
+      res.send(decoded);
+    });
+  });
+
+  app.get("/chkToken", withAuth, function(req, res) {
+    res.sendStatus(200);
   });
 
   app.listen(PORT, () => {

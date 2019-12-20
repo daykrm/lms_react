@@ -22,11 +22,10 @@ export default class Login extends Component {
     })
       .then(res => {
         if (res.status === 200) {
-          alert('login naja');
           this.props.history.push("/");
         } else {
           alert('error naja');
-          const error = new Error(res.error);
+          const error = new Error(res.err);
           throw error;
         }
       })
