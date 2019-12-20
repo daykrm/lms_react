@@ -18,8 +18,7 @@ export default class Login extends Component {
   handleSubmit = e => {
     e.preventDefault();
     Axios.post("/login", {
-      username: this.state.username,
-      password: this.state.password
+      body: JSON.stringify(this.state)
     })
       .then(res => {
         if (res.status === 200) {
@@ -63,7 +62,7 @@ export default class Login extends Component {
           onChange={this.handleChange}
         />
         <center>
-          <Button type="submit" className="MarginTop" variant="flat" size="lg">
+          <Button  onClick={this.handleSubmit} className="MarginTop" variant="flat" size="lg">
             Login
           </Button>
         </center>

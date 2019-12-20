@@ -9,6 +9,7 @@ import AddArt from "./AddArt";
 import Login from "./Login";
 import Aims from "./Aims";
 import Coach from "./Coach";
+import Reg from "./Reg";
 
 export default class App extends Component {
   render() {
@@ -27,6 +28,7 @@ export default class App extends Component {
           <Route path="/coach" component={Coach}/>
           <Route path="/addart" component={AddArt}/>
           <Route path="/login" component={Login}/>
+          <Route path="/reg" component={Reg}/>
           <Route path="/article/:ID" component={ArtDetail}/>
         </Switch>
             </Col>
