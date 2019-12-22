@@ -134,7 +134,7 @@ if (!isDev && cluster.isMaster) {
     });
   });
 
-  app.get("/secret", withAuth, function(req, res) {
+  app.get("/api/secret", withAuth, function(req, res) {
     const token =
       req.body.token ||
       req.query.token ||
@@ -145,7 +145,7 @@ if (!isDev && cluster.isMaster) {
     });
   });
 
-  app.get("/chkToken", withAuth, function(req, res) {
+  app.get("/api/chkToken", withAuth, function(req, res) {
     res.sendStatus(200);
   });
 

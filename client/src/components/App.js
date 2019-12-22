@@ -10,6 +10,7 @@ import Login from "./Login";
 import Aims from "./Aims";
 import Coach from "./Coach";
 import Reg from "./Reg";
+import withAuth from './withAuth';
 
 export default class App extends Component {
   render() {
