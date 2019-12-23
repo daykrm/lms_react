@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "ckeditor5-build-classic-simple-upload-adapter";
 import { Col, Row, Form } from "react-bootstrap";
 import Axios from "axios";
-
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 export default class AddArt extends Component {
   constructor(props) {
@@ -53,16 +52,22 @@ export default class AddArt extends Component {
             this.setState({ artDetail: data });
           }}
           config={{
-            simpleUpload: {
-              // The URL that the images are uploaded to.
-              uploadUrl: "https://49386.cke-cs.com/easyimage/upload/",
-     
-              // Headers sent along with the XMLHttpRequest to the upload server.
-              headers: {
-                'X-CSRF-TOKEN': 'CSFR-Token',
-                Authorization: "https://49386.cke-cs.com/token/dev/hU9KJhZNWYPelFve9RmdOww3BBZYMyevhrGZ1MCxUOsgaoZp0z2OeFZeGGmB"
-              }
-            }
+            cloudServices: {
+              tokenUrl: "https://49386.cke-cs.com/token/dev/r1v6Y0bDK3PsPURlWd2jrHTPHsgzeBUhmrWLSKQlKeMpine5w0Uvb5evGcVM",
+              uploadUrl:
+                "https://49386.cke-cs.com/easyimage/upload/"
+            },
+            toolbar: [
+              "imageUpload",
+              "|",
+              "heading",
+              "|",
+              "bold",
+              "italic",
+              "|",
+              "undo",
+              "redo"
+            ]
           }}
         />
         <center className="MarginTop">
