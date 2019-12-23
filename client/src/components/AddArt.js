@@ -60,7 +60,7 @@ export default class AddArt extends Component {
           config={{
             cloudServices: {
               tokenUrl:
-                "https://49386.cke-cs.com/token/dev/r1v6Y0bDK3PsPURlWd2jrHTPHsgzeBUhmrWLSKQlKeMpine5w0Uvb5evGcVM",
+                "/api/cstoken",
               uploadUrl: "https://49386.cke-cs.com/easyimage/upload/"
             }
           }}

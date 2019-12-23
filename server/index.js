@@ -59,6 +59,29 @@ if (!isDev && cluster.isMaster) {
       });
     });
   });
+  app.get("/api/cstoken", (req, res) => {
+    const payload = {
+      iss: "DI9BigUeHVQ4MDviVIwz",
+      iat: 1511963669,
+      user: {
+        id: "exampleuser",
+        email: "example@cksource.com",
+        name: "A User",
+        avatar: "http://example.com/avatars/john.png"
+      },
+      auth: {
+        collaboration: {
+          "*": {
+            role: "writer"
+          }
+        }
+      }
+    };
+    const cstoken = jwt.sign(payload, process.env.CS_SECRET, {
+      expiresIn: "1h"
+    });
+    res.cookie("cstoken", cstoken, { httpOnly: true }).sendStatus(200);
+  });
 
   app.post("/addart", (req, res) => {
     const { body } = req.body;
