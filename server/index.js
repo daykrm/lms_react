@@ -61,7 +61,7 @@ if (!isDev && cluster.isMaster) {
   });
   app.get("/api/cstoken", (req, res) => {
     const payload = {
-      iss: "DI9BigUeHVQ4MDviVIwz",
+      iss: process.env.CS_ID,
       iat: 1511963669
     };
     const cstoken = jwt.sign(payload, process.env.CS_SECRET, {
