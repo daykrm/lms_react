@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Col, Row, Form } from "react-bootstrap";
 import Axios from "axios";
 import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 
 export default class AddArt extends Component {
   constructor(props) {
@@ -41,11 +41,17 @@ export default class AddArt extends Component {
         </Row>
         <h4 className="MarginTop">Article's Detail</h4>
         <CKEditor
-          editor={ClassicEditor}
-          data="<p>Hello from CKEditor 5!</p>"
+          editor={DecoupledEditor}
           onInit={editor => {
-            // You can store the "editor" and use when it is needed.
             console.log("Editor is ready to use!", editor);
+
+            // Insert the toolbar before the editable area.
+            editor.ui
+              .getEditableElement()
+              .parentElement.insertBefore(
+                editor.ui.view.toolbar.element,
+                editor.ui.getEditableElement()
+              );
           }}
           onChange={(event, editor) => {
             const data = editor.getData();
@@ -53,21 +59,10 @@ export default class AddArt extends Component {
           }}
           config={{
             cloudServices: {
-              tokenUrl: "https://49386.cke-cs.com/token/dev/r1v6Y0bDK3PsPURlWd2jrHTPHsgzeBUhmrWLSKQlKeMpine5w0Uvb5evGcVM",
-              uploadUrl:
-                "https://49386.cke-cs.com/easyimage/upload/"
-            },
-            toolbar: [
-              "imageUpload",
-              "|",
-              "heading",
-              "|",
-              "bold",
-              "italic",
-              "|",
-              "undo",
-              "redo"
-            ]
+              tokenUrl:
+                "https://49386.cke-cs.com/token/dev/r1v6Y0bDK3PsPURlWd2jrHTPHsgzeBUhmrWLSKQlKeMpine5w0Uvb5evGcVM",
+              uploadUrl: "https://49386.cke-cs.com/easyimage/upload/"
+            }
           }}
         />
         <center className="MarginTop">
