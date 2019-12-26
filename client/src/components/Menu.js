@@ -31,10 +31,6 @@ export default class Menu extends Component {
                 <A href="#">ที่ปรึกษา</A>
               </Link>
               <br />
-              <Link to="/addart">
-                <A href="#">Addart</A>
-              </Link>
-              <br />
               <A
                 href="https://www.facebook.com/groups/466647190762171/"
                 target="_blank"
